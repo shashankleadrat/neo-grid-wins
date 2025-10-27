@@ -15,9 +15,9 @@ serve(async (req) => {
 
     // Simple minimax AI
     const findBestMove = (board: (string | null)[]) => {
-      const checkWin = (b: (string | null)[], player: string) => {
+      const checkWin = (squares: (string | null)[], player: string) => {
         const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-        return lines.some(([a,b,c]) => b[a] === player && b[b] === player && b[c] === player);
+        return lines.some(([a,b,c]) => squares[a] === player && squares[b] === player && squares[c] === player);
       };
 
       // Try to win
@@ -64,7 +64,7 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error('Error:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    return new Response(JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
