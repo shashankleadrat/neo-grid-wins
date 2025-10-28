@@ -11,15 +11,53 @@ serve(async (req) => {
   }
 
   try {
-    const { board } = await req.json();
+    const { board, difficulty = 'medium' } = await req.json();
 
-    // Simple minimax AI
-    const findBestMove = (board: (string | null)[]) => {
+    // AI with difficulty levels
+    const findBestMove = (board: (string | null)[], difficulty: string) => {
       const checkWin = (squares: (string | null)[], player: string) => {
         const lines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
         return lines.some(([a,b,c]) => squares[a] === player && squares[b] === player && squares[c] === player);
       };
 
+      // Easy: Random move
+      if (difficulty === 'easy') {
+        const empty = board.map((v, i) => v === null ? i : -1).filter(i => i !== -1);
+        return empty[Math.floor(Math.random() * empty.length)];
+      }
+
+      // Medium: Try to win or block
+      if (difficulty === 'medium') {
+        // Try to win
+      for (let i = 0; i < 9; i++) {
+        if (!board[i]) {
+          board[i] = 'O';
+          if (checkWin(board, 'O')) {
+            board[i] = null;
+            return i;
+          }
+          board[i] = null;
+        }
+      }
+
+        // Block player
+        for (let i = 0; i < 9; i++) {
+          if (!board[i]) {
+            board[i] = 'X';
+            if (checkWin(board, 'X')) {
+              board[i] = null;
+              return i;
+            }
+            board[i] = null;
+          }
+        }
+
+        // Random move
+        const empty = board.map((v, i) => v === null ? i : -1).filter(i => i !== -1);
+        return empty[Math.floor(Math.random() * empty.length)];
+      }
+
+      // Hard: Full minimax strategy
       // Try to win
       for (let i = 0; i < 9; i++) {
         if (!board[i]) {
@@ -57,7 +95,7 @@ serve(async (req) => {
       return empty[Math.floor(Math.random() * empty.length)];
     };
 
-    const move = findBestMove([...board]);
+    const move = findBestMove([...board], difficulty);
 
     return new Response(JSON.stringify({ move }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

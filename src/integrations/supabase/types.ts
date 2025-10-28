@@ -18,31 +18,37 @@ export type Database = {
         Row: {
           board_state: Json
           created_at: string | null
+          difficulty: string | null
           id: string
           opponent_id: string | null
           opponent_type: string
           player_id: string | null
           player_symbol: string
+          room_code: string | null
           winner: string | null
         }
         Insert: {
           board_state: Json
           created_at?: string | null
+          difficulty?: string | null
           id?: string
           opponent_id?: string | null
           opponent_type: string
           player_id?: string | null
           player_symbol: string
+          room_code?: string | null
           winner?: string | null
         }
         Update: {
           board_state?: Json
           created_at?: string | null
+          difficulty?: string | null
           id?: string
           opponent_id?: string | null
           opponent_type?: string
           player_id?: string | null
           player_symbol?: string
+          room_code?: string | null
           winner?: string | null
         }
         Relationships: [

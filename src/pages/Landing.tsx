@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import AnimatedLogo from "@/components/AnimatedLogo";
-import { Gamepad2, TrophyIcon, History } from "lucide-react";
+import { Gamepad2, TrophyIcon, History, Trophy } from "lucide-react";
 
 const Landing = () => {
   return (
@@ -26,6 +26,12 @@ const Landing = () => {
             <Button variant="hero" size="xl" className="w-full sm:w-auto">
               <Gamepad2 className="mr-2" />
               Play Now
+            </Button>
+          </Link>
+          <Link to="/leaderboard">
+            <Button variant="outline" size="xl" className="w-full sm:w-auto">
+              <Trophy className="mr-2" />
+              Leaderboard
             </Button>
           </Link>
           <Link to="/auth">
